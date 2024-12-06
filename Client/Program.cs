@@ -17,7 +17,19 @@ namespace Client
         public static int Id = -1;
         static void Main(string[] args)
         {
-
+            Console.Write("Введите IP адрес сервера: ");
+            string sIpAdress = Console.ReadLine();
+            Console.Write("Введите порт: ");
+            string sPort = Console.ReadLine();
+            if (int.TryParse(sPort, out Port) && IPAddress.TryParse(sIpAdress, out IPAddress))
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Данные успешно введены. Подключаюсь к серверу.");
+                while (true)
+                {
+                    ConnectServer();
+                }
+            }
         }
         public static bool CheckCommand(string message)
         {
@@ -145,7 +157,7 @@ namespace Client
                         {
                             string[] DataMessage = viewModelSend.Message.Split(new string[1] { " " }, StringSplitOptions.None);
                             string getFile = "";
-                            for (int i = 1, i < DataMessage.Length; i++)
+                            for (int i = 1; i < DataMessage.Length; i++)
                             {
                                 if (getFile == "")
                                 {
