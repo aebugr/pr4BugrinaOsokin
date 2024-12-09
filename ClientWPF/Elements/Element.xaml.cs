@@ -65,7 +65,7 @@ namespace ClientWPF.Elements
             {
                 if (Fileb)
                 {
-
+                    SendFileToServer(Path);
                 }
                 else
                 {
