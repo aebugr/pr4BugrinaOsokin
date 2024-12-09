@@ -8,7 +8,45 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Main">
 
-    <Grid>
-        
+    <Grid Background="#dee2e6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border MouseDown="Click_Directory" CornerRadius="5" Background="#212529" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" Height="50" Width="50" >
+            <Grid>
+                <Image Source="/ClientWPF;component/Images/Directory.png" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
+        <Border CornerRadius="5" Background="#212529" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="70,10,0,0" Height="50" Width="320">
+            <Grid>
+                <Label Content="Сервер" Foreground="#dee2e6" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
+        <ScrollViewer Margin="0,80,0,0">
+            <StackPanel x:Name="parentServer">
+                
+            </StackPanel>
+        </ScrollViewer>
+        <Border CornerRadius="5" Background="#212529" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,200,0" Height="50" Width="120" Grid.Column="1">
+            <Grid>
+                <Label Content="Клиент" Foreground="#dee2e6" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
+        <Border CornerRadius="5" Background="#212529" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="140,10,0,0" Height="50" Width="190" Grid.Column="1">
+            <Grid>
+                <TextBox x:Name="ClientDirectory" Margin="5" Background="#212529" BorderThickness="0" Foreground="#dee2e6" FontSize="13px" VerticalContentAlignment="Center"/>
+            </Grid>
+        </Border>
+        <Border MouseDown="Click_DirectoryClient" CornerRadius="5" Background="#212529" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="340,10,0,0" Height="50" Width="50" Grid.Column="1">
+            <Grid>
+                <Image Source="/ClientWPF;component/Images/Search.png" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
+        <ScrollViewer Margin="0,80,0,0" Grid.Column="1">
+            <StackPanel x:Name="parentClient">
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

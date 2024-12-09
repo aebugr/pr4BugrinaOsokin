@@ -31,7 +31,7 @@ namespace ClientWPF
         {
             InitializeComponent();
             mainWindow = this;
-            OpenPages(new Pages.Autorization());
+            OpenPages(new Pages.Main());
         }
         public Socket ConnectToServer()
         {
