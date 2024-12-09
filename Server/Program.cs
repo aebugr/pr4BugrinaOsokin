@@ -72,7 +72,8 @@ namespace Server
                             if (AutorizationUser(DataMessage[1], DataMessage[2]))
                             {
                                 int IdUser = Users.FindIndex(x => x.login == DataMessage[1] && x.password == DataMessage[2]);
-                                viewModelMessage = new ViewModelMessage("autorization", IdUser.ToString());                        
+                                viewModelMessage = new ViewModelMessage("autorization", IdUser.ToString());
+                                Database.AddUserCommand(Users[IdUser].id, ViewModelSend.Message);
                             }
                             else
                             {
@@ -110,6 +111,7 @@ namespace Server
 
                                     Users[ViewModelSend.Id].temp_src = Users[ViewModelSend.Id].temp_src + (cdFolder[0] != '\\' ? "\\" + cdFolder : cdFolder);
                                     FoldersFiles = GetDirectory(Users[ViewModelSend.Id].temp_src);
+                                    Database.AddUserCommand(Users[ViewModelSend.Id].id, ViewModelSend.Message);
                                 }
                                 if (FoldersFiles.Count == 0)
                                 {
@@ -147,6 +149,7 @@ namespace Server
                                 }
                                 byte[] byteFile = File.ReadAllBytes(Users[ViewModelSend.Id].temp_src + (getFile[0] != '\\' ? "\\" + getFile : getFile));
                                 viewModelMessage = new ViewModelMessage("file", JsonConvert.SerializeObject(byteFile));
+                                Database.AddUserCommand(Users[ViewModelSend.Id].id, ViewModelSend.Message);
                             }
                             else
                             {
@@ -163,7 +166,7 @@ namespace Server
                                 FileInfoFTP SendFileInfo = JsonConvert.DeserializeObject<FileInfoFTP>(ViewModelSend.Message);
                                 File.WriteAllBytes(Users[ViewModelSend.Id].temp_src + @"\" + SendFileInfo.Name, SendFileInfo.Data);
                                 viewModelMessage = new ViewModelMessage("message", "Файл загружен");
-                               
+                                Database.AddUserCommand(Users[ViewModelSend.Id].id, ViewModelSend.Message);
                             }
                             else
                             {
@@ -184,7 +187,7 @@ namespace Server
         }
         static void Main(string[] args)
         {
-            Users.Add(new User("aooshchepkov", "Asdfg123", @"A:\Aviatekhnikum"));
+            Users = Database.GetUsers();
             Console.Write("Введите IP адрес сервер: ");
             string sIpAddress = Console.ReadLine();
             Console.Write("Введите порт: ");

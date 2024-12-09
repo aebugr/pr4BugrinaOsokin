@@ -85,7 +85,7 @@ namespace ClientWPF.Pages
             {
                 foreach (var x in list)
                 {
-                    parentClient.Children.Add(new Elements.ElementFTP($"{CurrentDirectoryClient}{x}", x, false, this));
+                    parentClient.Children.Add(new Elements.Element($"{CurrentDirectoryClient}{x}", x, false, this));
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace ClientWPF.Pages
                     List<string> directoryContents = JsonConvert.DeserializeObject<List<string>>(responseMessage.Data);
                     foreach (var x in directoryContents)
                     {
-                        parentServer.Children.Add(new Elements.ElementFTP($"{CurrentDirectoryServer}{x}", x, true, this));
+                        parentServer.Children.Add(new Elements.Element($"{CurrentDirectoryServer}{x}", x, true, this));
                     }
                 }
                 else
@@ -174,7 +174,7 @@ namespace ClientWPF.Pages
                     List<string> directoryContents = JsonConvert.DeserializeObject<List<string>>(responseMessage.Data);
                     foreach (var x in directoryContents)
                     {
-                        parentServer.Children.Add(new Elements.ElementFTP($"{CurrentDirectoryServer}{x}", x, true, this));
+                        parentServer.Children.Add(new Elements.Element($"{CurrentDirectoryServer}{x}", x, true, this));
                     }
                 }
                 else
