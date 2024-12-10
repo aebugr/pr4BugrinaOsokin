@@ -9,23 +9,23 @@
       Title="Autorization">
 
     <Grid Background="#dee2e6">
-        <Border CornerRadius="5" Background="#212529" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10,0,0" Height="50" Width="400">
+        <Border CornerRadius="5" Background="#212529" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,2,0,0" Height="39" Width="400">
             <Grid>
-                <Label Content="Авторизация" Foreground="#dee2e6" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center"/>
+                <Label Content="Авторизация" Foreground="#dee2e6" FontWeight="Bold" FontSize="25" HorizontalAlignment="Center" Margin="0,-4,0,4"/>
             </Grid>
         </Border>
-        <Border VerticalAlignment="Top" Background="#212529" CornerRadius="5" HorizontalAlignment="Center" Width="300" Margin="0,70,0,0">
+        <Border VerticalAlignment="Top" Background="#212529" CornerRadius="5" HorizontalAlignment="Center" Width="300" Margin="0,46,0,0">
             <Grid>
-                <Label Content="Login" Height="40" Foreground="#dee2e6" VerticalAlignment="Top" FontSize="20"/>
-                <TextBox x:Name="Login" Height="40" VerticalAlignment="Top" BorderThickness="2" BorderBrush="#6c757d" Margin="0,40,0,0" Background="#212529"/>
-                <Label Content="Password" Height="40" Foreground="#dee2e6" VerticalAlignment="Top" FontSize="20" Margin="0,80,0,0"/>
-                <TextBox x:Name="Password" Height="40" BorderThickness="2" BorderBrush="#6c757d" VerticalAlignment="Top" Margin="0,120,0,0" Background="#212529"/>
-                <Label Content="IP" Height="40" Foreground="#dee2e6" VerticalAlignment="Top" FontSize="20" Margin="0,160,0,0"/>
-                <TextBox x:Name="IP" Height="40" BorderThickness="2" BorderBrush="#6c757d" VerticalAlignment="Top" Margin="0,200,0,0" Background="#212529"/>
-                <Label Content="Port" Height="40" Foreground="#dee2e6" VerticalAlignment="Top" FontSize="20" Margin="0,240,0,0"/>
-                <TextBox x:Name="Port" Height="40" BorderThickness="2" BorderBrush="#6c757d" VerticalAlignment="Top" Margin="0,280,0,5" Background="#212529"/>
+                <Label Content="Login" Height="40" Foreground="#dee2e6" VerticalAlignment="Top" FontSize="20" Margin="0,-1,0,0"/>
+                <TextBox x:Name="Login" FontSize="20" Foreground="#dee2e6" Height="40" VerticalAlignment="Top" BorderThickness="2" BorderBrush="#6c757d" Margin="0,36,0,0" Background="#212529"/>
+                <Label Content="Password" Height="40" Foreground="#dee2e6" VerticalAlignment="Top" FontSize="20" Margin="0,76,0,0"/>
+                <TextBox x:Name="Password" FontSize="20" Foreground="#dee2e6" Height="40" BorderThickness="2" BorderBrush="#6c757d" VerticalAlignment="Top" Margin="0,116,0,0" Background="#212529"/>
+                <Label Content="IP" Height="40" Foreground="#dee2e6" VerticalAlignment="Top" FontSize="20" Margin="0,156,0,0"/>
+                <TextBox x:Name="IP" FontSize="20" Foreground="#dee2e6" Height="40" BorderThickness="2" BorderBrush="#6c757d" VerticalAlignment="Top" Margin="0,198,0,0" Background="#212529"/>
+                <Label Content="Port" Height="40" Foreground="#dee2e6" VerticalAlignment="Top" FontSize="20" Margin="0,236,0,0"/>
+                <TextBox x:Name="Port" FontSize="20" Foreground="#dee2e6" Height="40" BorderThickness="2" BorderBrush="#6c757d" VerticalAlignment="Top" Margin="0,276,0,0" Background="#212529"/>
             </Grid>
         </Border>
-        <Button Click="ClickConnection" Content="Подключиться" FontWeight="Bold" Foreground="#dee2e6" FontSize="20" VerticalAlignment="Top" Background="#212529" HorizontalAlignment="Center" Width="300" BorderThickness="0" Height="40" Margin="0,405,0,0"/>
+        <Button Click="ClickConnection" Content="Подключиться" FontWeight="Bold" Foreground="#dee2e6" FontSize="20" VerticalAlignment="Top" Background="#212529" HorizontalAlignment="Center" Width="300" BorderThickness="0" Height="38" Margin="0,369,0,0"/>
     </Grid>
 </Page>

@@ -63,7 +63,6 @@ namespace ClientWPF.Pages
                         FoldersFiles.Add($"{NameFile}");
                     }
                 }
-
                 return FoldersFiles;
             }
             catch (Exception e)
@@ -78,9 +77,7 @@ namespace ClientWPF.Pages
             parentClient.Children.Clear();
             ClientDirectory.Text = dir;
             CurrentDirectoryClient = dir;
-
             var list = GetDirectory(CurrentDirectoryClient);
-
             if (list != null)
             {
                 foreach (var x in list)
@@ -98,28 +95,21 @@ namespace ClientWPF.Pages
 
                 if (!update)
                     CurrentDirectoryServer = !string.IsNullOrEmpty(dir) ? CurrentDirectoryServer + "\\" + dir : dir;
-
                 var socket = MainWindow.mainWindow.ConnectToServer();
                 var userId = MainWindow.mainWindow.Id;
-
                 if (socket == null)
                 {
                     MessageBox.Show("Не удалось подключиться к серверу.", "Ошибка подключения");
                     return;
                 }
-
                 string command = $"cd{(string.IsNullOrEmpty(dir) ? "" : " " + dir)}";
                 ViewModelSend viewModelSend = new ViewModelSend(command, userId);
-
                 byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(viewModelSend));
                 socket.Send(messageBytes);
-
                 byte[] buffer = new byte[10485760];
                 int bytesReceived = socket.Receive(buffer);
                 string serverResponse = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
-
                 ViewModelMessage responseMessage = JsonConvert.DeserializeObject<ViewModelMessage>(serverResponse);
-
                 socket.Close();
                 if (responseMessage.Command == "cd")
                 {
@@ -147,26 +137,20 @@ namespace ClientWPF.Pages
             {
                 OpenDirectoryServer("", true);
                 parentServer.Children.Clear();
-
                 var socket = MainWindow.mainWindow.ConnectToServer();
                 var userId = MainWindow.mainWindow.Id;
-
                 if (socket == null)
                 {
                     MessageBox.Show("Не удалось подключиться к серверу.", "Ошибка подключения");
                     return;
                 }
-
                 string command = $"cd {CurrentDirectoryServer}";
                 ViewModelSend viewModelSend = new ViewModelSend(command, userId);
-
                 byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(viewModelSend));
                 socket.Send(messageBytes);
-
                 byte[] buffer = new byte[10485760];
                 int bytesReceived = socket.Receive(buffer);
                 string serverResponse = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
-
                 ViewModelMessage responseMessage = JsonConvert.DeserializeObject<ViewModelMessage>(serverResponse);
                 socket.Close();
                 if (responseMessage.Command == "cd")
@@ -209,7 +193,6 @@ namespace ClientWPF.Pages
                 string serverResponse = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
                 ViewModelMessage responseMessage = JsonConvert.DeserializeObject<ViewModelMessage>(serverResponse);
                 socket.Close();
-
                 if (responseMessage.Command == "file")
                 {
                     byte[] fileData = JsonConvert.DeserializeObject<byte[]>(responseMessage.Data);

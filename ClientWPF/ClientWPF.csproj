@@ -7,11 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Directory.png" />
+    <None Remove="Images\file.png" />
+    <None Remove="Images\folder.png" />
+    <None Remove="Images\Search.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Directory.png" />
+    <Resource Include="Images\file.png" />
+    <Resource Include="Images\folder.png" />
+    <Resource Include="Images\Search.png" />
   </ItemGroup>
 
 </Project>
