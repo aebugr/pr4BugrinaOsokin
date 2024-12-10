@@ -22,7 +22,7 @@ namespace ClientWPF.Pages
     /// </summary>
     public partial class Main : Page
     {
-        string CurrentDirectoryClient = @"C:\";
+        string CurrentDirectoryClient = @"E:\";
         string CurrentDirectoryServer = @"";
 
         public Main()

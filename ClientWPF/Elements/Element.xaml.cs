@@ -41,9 +41,7 @@ namespace ClientWPF.Elements
                 FolderIcon.Visibility = Visibility.Hidden;
                 Fileb = true;
             }
-
             NameElement.Content = name;
-
             this.Server = server;
             this.Main = Main;
         }

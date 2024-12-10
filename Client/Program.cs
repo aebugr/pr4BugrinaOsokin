@@ -169,7 +169,7 @@ namespace Client
                                 }
                             }
                             byte[] byteFile = JsonConvert.DeserializeObject<byte[]>(viewModelMessage.Data);
-                            File.WriteAllBytes(getFile, byteFile);
+                            File.WriteAllBytes(Directory.GetCurrentDirectory() + getFile, byteFile);
                         }
                     }
                 }
