@@ -52,7 +52,7 @@ namespace ClientWPF.Elements
             {
                 if (Fileb)
                 {
-                    Main.DownloadFileFromServer(NameElement.ToString());
+                    Main.DownloadFileFromServer(Path);
                 }
                 else
                 {

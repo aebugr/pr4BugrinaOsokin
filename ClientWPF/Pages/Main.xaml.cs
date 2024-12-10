@@ -24,7 +24,6 @@ namespace ClientWPF.Pages
     {
         string CurrentDirectoryClient = @"E:\";
         string CurrentDirectoryServer = @"";
-
         public Main()
         {
             InitializeComponent();
@@ -32,12 +31,10 @@ namespace ClientWPF.Pages
             OpenDirectoryClient(CurrentDirectoryClient);
             OpenDirectoryServer();
         }
-
         private void Click_Directory(object sender, MouseButtonEventArgs e)
         {
             OpenDirectoryServer();
         }
-
         private void Click_DirectoryClient(object sender, MouseButtonEventArgs e)
         {
             OpenDirectoryClient(ClientDirectory.Text);
@@ -176,7 +173,6 @@ namespace ClientWPF.Pages
         {
             try
             {
-                var localSavePath = (CurrentDirectoryClient[0] != '\\' ? CurrentDirectoryClient + "\\" : CurrentDirectoryClient) + serverFilePath;
                 var socket = MainWindow.mainWindow.ConnectToServer();
                 var userId = MainWindow.mainWindow.Id;
                 if (socket == null)
@@ -185,25 +181,27 @@ namespace ClientWPF.Pages
                     return;
                 }
                 string command = $"get {serverFilePath}";
+                Console.WriteLine($"Отправляем команду серверу: {command}");
                 ViewModelSend viewModelSend = new ViewModelSend(command, userId);
                 byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(viewModelSend));
                 socket.Send(messageBytes);
                 byte[] buffer = new byte[10485760];
                 int bytesReceived = socket.Receive(buffer);
                 string serverResponse = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
+                Console.WriteLine($"Ответ от сервера: {serverResponse}");
                 ViewModelMessage responseMessage = JsonConvert.DeserializeObject<ViewModelMessage>(serverResponse);
-                socket.Close();
                 if (responseMessage.Command == "file")
                 {
                     byte[] fileData = JsonConvert.DeserializeObject<byte[]>(responseMessage.Data);
+                    string localSavePath = (CurrentDirectoryClient[0] != '\\' ? CurrentDirectoryClient + "\\" : CurrentDirectoryClient) + serverFilePath;
                     File.WriteAllBytes(localSavePath, fileData);
-                    OpenDirectoryClient(CurrentDirectoryClient);
                     MessageBox.Show($"Файл успешно скачан и сохранён в: {localSavePath}", "Скачивание завершено");
                 }
                 else
                 {
-                    MessageBox.Show("Не удалось получить файл. Проверьте путь на сервере.", "Ошибка");
+                    MessageBox.Show(responseMessage.Data, "Ошибка");
                 }
+                socket.Close();
             }
             catch (Exception ex)
             {

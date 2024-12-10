@@ -108,9 +108,15 @@ namespace Server
                                             cdFolder += " " + DataMessage[i];
                                         }
                                     }
-
-                                    Users[ViewModelSend.Id].temp_src = Users[ViewModelSend.Id].temp_src + (cdFolder[0] != '\\' ? "\\" + cdFolder : cdFolder);
-                                    FoldersFiles = GetDirectory(Users[ViewModelSend.Id].temp_src);
+                                    Users[ViewModelSend.Id].temp_src = Path.Combine(Users[ViewModelSend.Id].temp_src, cdFolder);
+                                    if (!Directory.Exists(Users[ViewModelSend.Id].temp_src))
+                                    {
+                                        viewModelMessage = new ViewModelMessage("message", "Директория пуста или не существует.");
+                                    }
+                                    else
+                                    {
+                                        FoldersFiles = GetDirectory(Users[ViewModelSend.Id].temp_src);
+                                    }
                                     Database.AddUserCommand(Users[ViewModelSend.Id].id, ViewModelSend.Message);
                                 }
                                 if (FoldersFiles.Count == 0)
@@ -134,30 +140,44 @@ namespace Server
                         {
                             if (ViewModelSend.Id != -1)
                             {
-                                string[] DataMessage = ViewModelSend.Message.Split(new string[1] { " " }, StringSplitOptions.None);
                                 string getFile = "";
+                                string[] DataMessage = ViewModelSend.Message.Split(new string[1] { " " }, StringSplitOptions.None);
                                 for (int i = 1; i < DataMessage.Length; i++)
                                 {
-                                    if (getFile == "")
+                                    getFile += (i > 1 ? " " : "") + DataMessage[i];
+                                }
+                                string fullPath = Path.Combine(Users[ViewModelSend.Id].temp_src, getFile.TrimStart('\\'));
+                                Console.WriteLine($"Запрашиваемый файл: {getFile}");
+                                Console.WriteLine($"Полный путь к файлу на сервере: {fullPath}");
+                                Console.WriteLine($"Текущая директория пользователя: {Users[ViewModelSend.Id].temp_src}");
+                                if (!File.Exists(fullPath))
+                                {
+                                    Console.WriteLine("Файл не найден.");
+                                    viewModelMessage = new ViewModelMessage("message", "Файл не найден.");
+                                    return;
+                                }
+                                else
+                                {
+                                    try
                                     {
-                                        getFile += DataMessage[i];
+                                        byte[] byteFile = File.ReadAllBytes(fullPath);
+                                        viewModelMessage = new ViewModelMessage("file", JsonConvert.SerializeObject(byteFile));
+                                        Console.WriteLine($"Файл успешно прочитан: {getFile}");
                                     }
-                                    else
+                                    catch (Exception ex)
                                     {
-                                        getFile += " " + DataMessage[i];
+                                        Console.WriteLine($"Ошибка чтения файла: {ex.Message}");
+                                        viewModelMessage = new ViewModelMessage("message", "Ошибка при чтении файла.");
                                     }
                                 }
-                                byte[] byteFile = File.ReadAllBytes(Users[ViewModelSend.Id].temp_src + (getFile[0] != '\\' ? "\\" + getFile : getFile));
-                                viewModelMessage = new ViewModelMessage("file", JsonConvert.SerializeObject(byteFile));
-                                Database.AddUserCommand(Users[ViewModelSend.Id].id, ViewModelSend.Message);
+                                Reply = JsonConvert.SerializeObject(viewModelMessage);
+                                byte[] message = Encoding.UTF8.GetBytes(Reply);
+                                Handler.Send(message);
                             }
                             else
                             {
-                                viewModelMessage = new ViewModelMessage("message", "Необходимо авторизоваться");
+                                viewModelMessage = new ViewModelMessage("message", "Необходимо авторизоваться.");
                             }
-                            Reply = JsonConvert.SerializeObject(viewModelMessage);
-                            byte[] message = Encoding.UTF8.GetBytes(Reply);
-                            Handler.Send(message);
                         }
                         else
                         {
