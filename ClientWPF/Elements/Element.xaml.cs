@@ -52,13 +52,14 @@ namespace ClientWPF.Elements
             {
                 if (Fileb)
                 {
-                    Main.DownloadFileFromServer(Path);
+                    Main.DownloadFileFromServer(NameElement.Content.ToString());
                 }
                 else
                 {
-                    Main.OpenDirectoryServer(NameElement.ToString());
+                    Main.OpenDirectoryServer(NameElement.Content.ToString());
                 }
             }
+
             else
             {
                 if (Fileb)

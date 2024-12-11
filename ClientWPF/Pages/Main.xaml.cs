@@ -91,7 +91,16 @@ namespace ClientWPF.Pages
                 parentServer.Children.Clear();
 
                 if (!update)
-                    CurrentDirectoryServer = !string.IsNullOrEmpty(dir) ? CurrentDirectoryServer + "\\" + dir : dir;
+                {
+                    if (string.IsNullOrEmpty(dir))
+                    {
+                        CurrentDirectoryServer = ""; // Переход в корневую директорию сервера
+                    }
+                    else
+                    {
+                        CurrentDirectoryServer = System.IO.Path.Combine(CurrentDirectoryServer, dir);
+                    }
+                }
                 var socket = MainWindow.mainWindow.ConnectToServer();
                 var userId = MainWindow.mainWindow.Id;
                 if (socket == null)
@@ -99,15 +108,21 @@ namespace ClientWPF.Pages
                     MessageBox.Show("Не удалось подключиться к серверу.", "Ошибка подключения");
                     return;
                 }
-                string command = $"cd{(string.IsNullOrEmpty(dir) ? "" : " " + dir)}";
+
+                // Формирование команды
+                string command = string.IsNullOrEmpty(dir) ? "cd" : $"cd \"{dir}\"";
+                Console.WriteLine($"Команда для перехода в директорию: {command}");
                 ViewModelSend viewModelSend = new ViewModelSend(command, userId);
                 byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(viewModelSend));
                 socket.Send(messageBytes);
+
+                // Получение ответа
                 byte[] buffer = new byte[10485760];
                 int bytesReceived = socket.Receive(buffer);
                 string serverResponse = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
                 ViewModelMessage responseMessage = JsonConvert.DeserializeObject<ViewModelMessage>(serverResponse);
                 socket.Close();
+
                 if (responseMessage.Command == "cd")
                 {
                     List<string> directoryContents = JsonConvert.DeserializeObject<List<string>>(responseMessage.Data);
@@ -126,8 +141,6 @@ namespace ClientWPF.Pages
                 MessageBox.Show($"Ошибка при переходе по директориям: {ex.Message}", "Ошибка");
             }
         }
-
-
         public void UpdateDir()
         {
             try

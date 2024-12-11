@@ -99,29 +99,27 @@ namespace Server
                                     string cdFolder = "";
                                     for (int i = 1; i < DataMessage.Length; i++)
                                     {
-                                        if (cdFolder == "")
-                                        {
-                                            cdFolder += DataMessage[i];
-                                        }
-                                        else
-                                        {
-                                            cdFolder += " " + DataMessage[i];
-                                        }
+                                        cdFolder += (i > 1 ? " " : "") + DataMessage[i];
                                     }
-                                    Users[ViewModelSend.Id].temp_src = Path.Combine(Users[ViewModelSend.Id].temp_src, cdFolder);
-                                    if (!Directory.Exists(Users[ViewModelSend.Id].temp_src))
+                                    cdFolder = cdFolder.Trim('"');
+                                    string fullPath = Path.Combine(Users[ViewModelSend.Id].temp_src, cdFolder);
+                                    Console.WriteLine($"Переход в директорию: {fullPath}");
+                                    if (!Directory.Exists(fullPath))
                                     {
+                                        Console.WriteLine("Директория не существует.");
                                         viewModelMessage = new ViewModelMessage("message", "Директория пуста или не существует.");
+                                        Reply = JsonConvert.SerializeObject(viewModelMessage);
+                                        Handler.Send(Encoding.UTF8.GetBytes(Reply));
+                                        return;
                                     }
-                                    else
-                                    {
-                                        FoldersFiles = GetDirectory(Users[ViewModelSend.Id].temp_src);
-                                    }
-                                    Database.AddUserCommand(Users[ViewModelSend.Id].id, ViewModelSend.Message);
+
+                                    Users[ViewModelSend.Id].temp_src = fullPath;
+                                    FoldersFiles = GetDirectory(fullPath);
                                 }
+
                                 if (FoldersFiles.Count == 0)
                                 {
-                                    viewModelMessage = new ViewModelMessage("message", "Директория пуста или не существутет.");
+                                    viewModelMessage = new ViewModelMessage("message", "Директория пуста или не существует.");
                                 }
                                 else
                                 {
@@ -130,11 +128,10 @@ namespace Server
                             }
                             else
                             {
-                                viewModelMessage = new ViewModelMessage("message", "Необходимо авторизоваться");
+                                viewModelMessage = new ViewModelMessage("message", "Необходимо авторизоваться.");
                             }
                             Reply = JsonConvert.SerializeObject(viewModelMessage);
-                            byte[] message = Encoding.UTF8.GetBytes(Reply);
-                            Handler.Send(message);
+                            Handler.Send(Encoding.UTF8.GetBytes(Reply));
                         }
                         else if (DataCommand[0] == "get")
                         {
